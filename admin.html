@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Керування каталогом подарунків — GiftConstructor Admin</title>
+	<meta name="description" content="Адміністративна панель для керування каталогом ідей подарунків. Додавання, редагування, видалення та пошук.">
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎁</text></svg>">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="admin.css">
+</head>
+
+<body>
+	<!-- Sticky Admin Header -->
+	<header class="sticky-header">
+		<div class="header-container">
+			<a href="admin.html" class="brand-logo" id="adminBrandLogo">
+				<span class="logo-icon">🎁</span>
+				<span class="logo-text">GiftConstructor</span>
+				<span class="admin-badge-indicator">Admin</span>
+			</a>
+
+			<div class="admin-header-actions" id="adminHeaderActions">
+				<a href="index.html" class="btn btn-outline btn-sm" id="backToConstructorLink">
+					<span>⬅ До конструктора</span>
+				</a>
+				<button type="button" class="btn btn-primary btn-sm auth-protected" id="headerAddGiftBtn" style="display: none;">
+					<span>➕ Додати подарунок</span>
+				</button>
+				<button type="button" class="btn btn-secondary btn-sm auth-protected" id="headerLogoutBtn" style="display: none;" title="Вийти з панелі адміністратора">
+					<span>🚪 Вийти</span>
+				</button>
+			</div>
+		</div>
+	</header>
+
+	<!-- ======================================================================
+	     1. Login Screen (Shown when unauthenticated)
+	     ====================================================================== -->
+	<section class="login-view-wrapper" id="adminLoginView">
+		<div class="login-card">
+			<div class="login-icon-box">
+				<span>🔐</span>
+			</div>
+			<h1 class="login-title">Вхід для адміністратора</h1>
+			<p class="login-subtitle">Введіть пароль для доступу до керування каталогом подарунків</p>
+
+			<!-- Login Error Banner -->
+			<div class="login-error-banner" id="loginErrorBanner" role="alert" style="display: none;">
+				<span class="error-banner-icon">⚠️</span>
+				<span id="loginErrorMessage">Невірний пароль. Спробуйте ще раз.</span>
+			</div>
+
+			<form id="adminLoginForm" class="login-form" novalidate autocomplete="off">
+				<div class="form-group">
+					<label for="adminPasswordInput" class="login-field-label">Пароль адміністратора:</label>
+					<div class="password-input-wrap">
+						<input type="password" id="adminPasswordInput" name="password" class="password-input" placeholder="Введіть пароль..." required autofocus autocomplete="current-password">
+						<button type="button" id="togglePasswordVisibilityBtn" class="password-toggle-btn" aria-label="Показати або приховати пароль" title="Показати/приховати пароль">
+							<span id="passwordToggleIcon">👁️</span>
+						</button>
+					</div>
+				</div>
+
+				<button type="submit" id="loginSubmitBtn" class="btn btn-primary login-submit-btn">
+					<span id="loginBtnText">Увійти до панелі</span>
+					<span>➔</span>
+				</button>
+			</form>
+
+			<div class="login-footer-info">
+				<p class="login-hint-text">💡 <strong>Демо-доступ:</strong> Пароль за замовчуванням — <code class="pwd-code">admin2026</code></p>
+				<a href="index.html" class="login-back-link">⬅ Повернутися на головну конструктора</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- ======================================================================
+	     2. Protected Admin Dashboard (Shown after authentication)
+	     ====================================================================== -->
+	<main class="container admin-dashboard-view" id="adminDashboardView" style="padding-top: 2rem; display: none;">
+		<!-- Admin Page Title Header -->
+		<div class="section-header" style="margin-bottom: 1.5rem;">
+			<h2>Керування каталогом подарунків</h2>
+			<p class="subtitle" style="margin: 0;">Повний контроль над каталогом: додавання нових ідей, редагування цін, налаштування категорій та видалення.</p>
+		</div>
+
+		<!-- Dashboard Metrics Summary -->
+		<section class="admin-metrics-grid" aria-label="Статистика каталогу">
+			<div class="metric-card">
+				<div class="metric-icon-wrap metric-icon-primary">
+					<span>🎁</span>
+				</div>
+				<div class="metric-info">
+					<span class="metric-value" id="metricTotalGifts">0</span>
+					<span class="metric-label">Всього подарунків</span>
+				</div>
+			</div>
+
+			<div class="metric-card">
+				<div class="metric-icon-wrap metric-icon-secondary">
+					<span>🏷️</span>
+				</div>
+				<div class="metric-info">
+					<span class="metric-value" id="metricCategoriesCount">0</span>
+					<span class="metric-label">Активних категорій</span>
+				</div>
+			</div>
+
+			<div class="metric-card">
+				<div class="metric-icon-wrap metric-icon-accent">
+					<span>📊</span>
+				</div>
+				<div class="metric-info">
+					<span class="metric-value" id="metricAvgPrice">0 грн</span>
+					<span class="metric-label">Середня ціна</span>
+				</div>
+			</div>
+
+			<div class="metric-card">
+				<div class="metric-icon-wrap metric-icon-success">
+					<span>💰</span>
+				</div>
+				<div class="metric-info">
+					<span class="metric-value" id="metricPriceRange">0 грн</span>
+					<span class="metric-label">Діапазон цін</span>
+				</div>
+			</div>
+		</section>
+
+		<!-- Search, Filter & Action Toolbar -->
+		<section class="admin-toolbar" aria-label="Панель пошуку та фільтрації">
+			<div class="toolbar-primary-row">
+				<div class="search-box-wrap">
+					<span class="search-icon">🔍</span>
+					<input type="text" id="searchInput" class="search-input" placeholder="Пошук за назвою або ключовими словами..." autocomplete="off">
+					<button type="button" id="clearSearchBtn" class="search-clear-btn" aria-label="Очистити пошук">✕</button>
+				</div>
+				<button type="button" class="btn btn-primary" id="toolbarAddGiftBtn">
+					<span>➕ Додати новий подарунок</span>
+				</button>
+			</div>
+
+			<div class="toolbar-secondary-row">
+				<label for="categoryFilter" style="font-size: 0.85rem; color: var(--color-text-muted); font-weight: 600;">Фільтри:</label>
+				<select id="categoryFilter" class="filter-select" aria-label="Фільтр за категорією">
+					<option value="">Усі категорії</option>
+				</select>
+
+				<select id="recipientFilter" class="filter-select" aria-label="Фільтр за отримувачем">
+					<option value="">Усі отримувачі</option>
+				</select>
+
+				<select id="sortSelect" class="filter-select" aria-label="Сортування каталогу">
+					<option value="id-desc">Найновіші спочатку</option>
+					<option value="id-asc">Найстаріші спочатку</option>
+					<option value="price-asc">Ціна: від дешевших</option>
+					<option value="price-desc">Ціна: від дорожчих</option>
+					<option value="title-asc">Назва: А — Я</option>
+					<option value="title-desc">Назва: Я — А</option>
+				</select>
+
+				<button type="button" id="resetFiltersBtn" class="btn btn-secondary btn-sm" style="margin-left: auto;">
+					<span>🔄 Скинути фільтри</span>
+				</button>
+			</div>
+		</section>
+
+		<!-- Catalog Status Bar -->
+		<div class="catalog-status-bar">
+			<span id="catalogCountStatus">Завантаження каталогу...</span>
+			<button type="button" id="resetDemoCatalogBtn" class="btn btn-outline btn-sm" style="font-size: 0.8rem; padding: 0.35rem 0.75rem;" title="Відновити початкову демонстраційну базу з 18 подарунків">
+				<span>⚙️ Відновити демо-базу</span>
+			</button>
+		</div>
+
+		<!-- Desktop Catalog Table -->
+		<div class="catalog-table-container" id="catalogTableContainer">
+			<table class="catalog-table" aria-label="Таблиця подарунків">
+				<thead>
+					<tr>
+						<th class="col-img">Фото</th>
+						<th class="col-details">Подарунок</th>
+						<th>Категорія</th>
+						<th>Отримувачі</th>
+						<th>Події</th>
+						<th>Ціна</th>
+						<th class="actions-cell">Дії</th>
+					</tr>
+				</thead>
+				<tbody id="catalogTableBody">
+					<!-- Dynamic items rendered by admin.js -->
+				</tbody>
+			</table>
+		</div>
+
+		<!-- Mobile / Tablet Responsive Cards Container -->
+		<div class="catalog-cards-container" id="catalogCardsContainer">
+			<!-- Dynamic mobile cards rendered by admin.js -->
+		</div>
+
+		<!-- Empty States (Search or Catalog) -->
+		<div class="admin-empty-state" id="emptyStateContainer" style="display: none;">
+			<div class="empty-state-icon" id="emptyStateIcon">📦</div>
+			<h3 id="emptyStateTitle">Подарунків не знайдено</h3>
+			<p id="emptyStateDesc">Спробуйте змінити пошуковий запит або скинути активні фільтри.</p>
+			<div class="empty-state-actions" id="emptyStateActions">
+				<button type="button" class="btn btn-secondary btn-sm" id="emptyResetSearchBtn">Скинути пошук</button>
+			</div>
+		</div>
+	</main>
+
+	<!-- Footer -->
+	<footer style="margin-top: auto;">
+		<div class="footer-container">
+			<div class="footer-brand">
+				<span class="footer-logo">🎁 GiftConstructor Admin</span>
+				<p>Система адміністрування каталогу ідей подарунків.</p>
+			</div>
+			<div class="footer-links">
+				<a href="index.html">До Конструктора</a>
+				<a href="index.html#where-to-buy">Де купити</a>
+				<a href="index.html#faq">FAQ</a>
+			</div>
+			<div class="footer-copy">
+				<p>© 2026 GiftConstructor. Панель адміністратора.</p>
+			</div>
+		</div>
+	</footer>
+
+	<!-- ======================================================================
+	     3. Redesigned Add / Edit Gift Modal Dialog
+	     With Dedicated Scrolling Body and Pinned Accessible Footer
+	     ====================================================================== -->
+	<div class="modal-overlay" id="giftModalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+		<div class="modal-card">
+			<!-- Sticky Modal Header -->
+			<div class="modal-header">
+				<div class="modal-header-info">
+					<h3 class="modal-title" id="modalTitle">
+						<span class="modal-title-badge" id="modalTitleIcon">➕</span>
+						<span id="modalTitleText">Додати новий подарунок</span>
+					</h3>
+					<p class="modal-subtitle">Заповніть інформацію нижче для публікації подарунка в каталозі</p>
+				</div>
+				<button type="button" class="modal-close-btn" id="modalCloseBtn" aria-label="Закрити вікно">✕</button>
+			</div>
+
+			<!-- Form Wrapper with Dedicated Scroll Container -->
+			<form id="giftAdminForm" class="modal-form-wrap" novalidate>
+				<input type="hidden" id="formGiftId" name="id" value="">
+
+				<div class="modal-body" id="modalScrollBody">
+					<!-- General Errors Banner -->
+					<div id="formGeneralError" class="form-field-error" style="background: #fee2e2; padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: 1px solid #fca5a5; margin-bottom: 0.5rem;"></div>
+
+					<!-- Section 1: Основна інформація -->
+					<div class="form-section-card">
+						<div class="form-section-header">
+							<span class="section-icon">📋</span>
+							<h4 class="section-title">Основна інформація</h4>
+						</div>
+
+						<div class="form-group">
+							<label for="formTitle">Назва подарунка: <span class="required-star">*</span></label>
+							<input type="text" id="formTitle" name="title" placeholder="Наприклад: Бездротові навушники з шумозаглушенням" required maxlength="120">
+							<span class="field-hint">Вкажіть точну або комерційну назву товару чи враження</span>
+							<span class="form-field-error" id="errorTitle">Введіть коректну назву подарунка.</span>
+						</div>
+
+						<div class="form-group" style="margin-top: 1rem;">
+							<label for="formBadge">Бейдж / Підзаголовок: <span class="optional-tag">(опціонально)</span></label>
+							<input type="text" id="formBadge" name="badge" placeholder="Наприклад: Топ вибір, Новинка, Затишок" maxlength="40">
+							<div class="badge-quick-suggestions">
+								<span class="quick-chip-label">Швидкий вибір:</span>
+								<button type="button" class="quick-badge-chip" data-badge="Хіт вибору">Хіт вибору</button>
+								<button type="button" class="quick-badge-chip" data-badge="Новинка 2026">Новинка 2026</button>
+								<button type="button" class="quick-badge-chip" data-badge="Преміум догляд">Преміум догляд</button>
+								<button type="button" class="quick-badge-chip" data-badge="Тепло та затишок">Тепло та затишок</button>
+							</div>
+						</div>
+					</div>
+
+					<!-- Section 2: Категорія та Ціноутворення -->
+					<div class="form-section-card">
+						<div class="form-section-header">
+							<span class="section-icon">🏷️</span>
+							<h4 class="section-title">Категорія та ціноутворення</h4>
+						</div>
+
+						<div class="form-grid-2">
+							<div class="form-group">
+								<label for="formCategory">Категорія: <span class="required-star">*</span></label>
+								<select id="formCategory" name="category" required>
+									<option value="">-- Оберіть категорію --</option>
+									<option value="SPA & Догляд">SPA & Догляд</option>
+									<option value="Гаджети & Tech">Гаджети & Tech</option>
+									<option value="Затишок & Дім">Затишок & Дім</option>
+									<option value="Солодощі & Кава">Солодощі & Кава</option>
+									<option value="Стиль & Аксесуари">Стиль & Аксесуари</option>
+									<option value="Книги & Творчість">Книги & Творчість</option>
+									<option value="Враження">Враження</option>
+								</select>
+								<span class="form-field-error" id="errorCategory">Оберіть категорію для подарунка.</span>
+							</div>
+
+							<div class="form-group">
+								<label for="formPrice">Ціна (грн): <span class="required-star">*</span></label>
+								<div class="price-input-container">
+									<input type="number" id="formPrice" name="price" placeholder="1250" min="1" max="1000000" step="1" required>
+									<span class="price-currency-addon">грн</span>
+								</div>
+								<span class="form-field-error" id="errorPrice">Вкажіть додатну ціну (більше 0 грн).</span>
+							</div>
+						</div>
+					</div>
+
+					<!-- Section 3: Візуальне оформлення (Фото) -->
+					<div class="form-section-card">
+						<div class="form-section-header">
+							<span class="section-icon">🖼️</span>
+							<h4 class="section-title">Зображення подарунка</h4>
+						</div>
+
+						<div class="form-group">
+							<label for="formImg">Посилання на зображення (URL): <span class="optional-tag">(опціонально)</span></label>
+							<input type="url" id="formImg" name="img" placeholder="https://images.unsplash.com/... або assets/images/celebration.jpg">
+							<span class="field-hint">Вставте пряме посилання на фото. Якщо залишити порожнім — підбереться тематичне фото за категорією</span>
+						</div>
+
+						<div class="image-preview-card">
+							<div class="preview-img-wrapper">
+								<img src="assets/images/celebration.jpg" alt="Попередній перегляд фото" id="formImgPreview" class="preview-thumb-img">
+							</div>
+							<div class="preview-details">
+								<div class="preview-badge-status" id="previewStatusBadge">🟢 Фото готове до показу</div>
+								<h5 class="preview-card-title">Попередній перегляд картки</h5>
+								<p class="preview-card-desc">Зображення автоматично масштабується для збереження пропорцій у публічному конструкторі.</p>
+							</div>
+						</div>
+					</div>
+
+					<!-- Section 4: Отримувачі -->
+					<div class="form-section-card">
+						<div class="form-section-header">
+							<span class="section-icon">👤</span>
+							<h4 class="section-title">Цільові отримувачі <span class="required-star">*</span></h4>
+						</div>
+
+						<div class="selector-tools-bar">
+							<span class="selector-badge-hint">Оберіть кому підійде цей подарунок:</span>
+							<div class="selector-quick-actions">
+								<button type="button" id="selectAllRecipientsBtn">Обрати всіх</button>
+								<span class="tools-divider">|</span>
+								<button type="button" id="clearRecipientsBtn">Зняти всі</button>
+							</div>
+						</div>
+
+						<div class="tag-checkbox-group" id="recipientsTagGroup">
+							<!-- Rendered dynamically by admin.js -->
+						</div>
+						<span class="form-field-error" id="errorRecipients">Оберіть хоча б одного отримувача.</span>
+					</div>
+
+					<!-- Section 5: Події -->
+					<div class="form-section-card">
+						<div class="form-section-header">
+							<span class="section-icon">🎉</span>
+							<h4 class="section-title">Святкові події та приводи <span class="required-star">*</span></h4>
+						</div>
+
+						<div class="selector-tools-bar">
+							<span class="selector-badge-hint">Оберіть свята, для яких актуальний подарунок:</span>
+							<div class="selector-quick-actions">
+								<button type="button" id="selectAllOccasionsBtn">Обрати всі</button>
+								<span class="tools-divider">|</span>
+								<button type="button" id="clearOccasionsBtn">Зняти всі</button>
+							</div>
+						</div>
+
+						<div class="tag-checkbox-group" id="occasionsTagGroup">
+							<!-- Rendered dynamically by admin.js -->
+						</div>
+						<span class="form-field-error" id="errorOccasions">Оберіть хоча б одну подію для подарунка.</span>
+					</div>
+
+					<!-- Section 6: Опис -->
+					<div class="form-section-card" style="margin-bottom: 0.5rem;">
+						<div class="form-section-header">
+							<span class="section-icon">📝</span>
+							<h4 class="section-title">Детальний опис <span class="required-star">*</span></h4>
+						</div>
+
+						<div class="form-group">
+							<div style="display: flex; justify-content: space-between; align-items: center;">
+								<label for="formDesc">Опис подарунка або враження:</label>
+								<span id="descCharCounter" class="char-counter">0 / 500</span>
+							</div>
+							<textarea id="formDesc" name="desc" rows="4" placeholder="Детально опишіть вміст подарункового боксу, технічні характеристики чи деталі враження (від 10 символів)..." required minlength="10" maxlength="500"></textarea>
+							<span class="form-field-error" id="errorDesc">Опис має містити щонайменше 10 символів.</span>
+						</div>
+					</div>
+				</div>
+
+				<!-- Fixed & Always Accessible Modal Footer -->
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline" id="modalCancelBtn">Скасувати</button>
+					<button type="submit" class="btn btn-primary" id="modalSubmitBtn">
+						<span id="modalSubmitText">Зберегти подарунок</span>
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<!-- ======================================================================
+	     4. Modal Dialog: Delete Confirmation
+	     ====================================================================== -->
+	<div class="modal-overlay" id="deleteModalOverlay" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle">
+		<div class="modal-card delete-modal-card">
+			<div class="modal-header">
+				<h3 class="modal-title" id="deleteModalTitle" style="color: var(--color-error);">
+					<span class="modal-title-badge" style="background: #fee2e2; color: var(--color-error);">🗑️</span>
+					<span>Видалення подарунка</span>
+				</h3>
+				<button type="button" class="modal-close-btn" id="deleteModalCloseBtn" aria-label="Закрити вікно">✕</button>
+			</div>
+
+			<div class="modal-body" style="padding: 1.5rem 1.75rem;">
+				<p style="font-size: 0.98rem; color: var(--color-text-main); margin-bottom: 1rem;">
+					Ви дійсно впевнені, що хочете видалити цей подарунок із каталогу? Цю дію <strong>неможливо скасувати</strong>.
+				</p>
+
+				<div class="delete-target-preview">
+					<img src="assets/images/celebration.jpg" alt="" id="deletePreviewThumb" class="delete-thumb">
+					<div style="flex: 1;">
+						<div class="delete-title" id="deletePreviewTitle">Назва подарунка</div>
+						<div class="delete-price" id="deletePreviewPrice">0 грн</div>
+					</div>
+				</div>
+
+				<p style="font-size: 0.82rem; color: var(--color-text-muted); margin: 0;">
+					Після підтвердження цей подарунок буде повністю вилучено з бази даних та результатів рекомендацій публічного Конструктора.
+				</p>
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline" id="deleteModalCancelBtn">Скасувати</button>
+				<button type="button" class="btn btn-danger" id="deleteModalConfirmBtn">
+					<span>Так, видалити</span>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- ======================================================================
+	     5. Floating Toast Notification Container
+	     ====================================================================== -->
+	<div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
+
+	<!-- Scripts -->
+	<script src="catalog-service.js"></script>
+	<script src="admin.js"></script>
+</body>
+
+</html>

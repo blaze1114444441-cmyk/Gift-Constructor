@@ -1,0 +1,1028 @@
+/* ==========================================================================
+   Конструктор подарунків — Design System & Mobile-First CSS (Homework #3)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS Змінні та Базові налаштування (Design Tokens & Reset)
+   -------------------------------------------------------------------------- */
+:root {
+	--font-primary: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	
+	/* Palette */
+	--color-bg-main: #fcfbf9;
+	--color-bg-card: #ffffff;
+	--color-bg-alt: #f1f5f9;
+	
+	--color-text-main: #0f172a;
+	--color-text-muted: #64748b;
+	--color-text-light: #94a3b8;
+	
+	--color-primary: #e11d48;
+	--color-primary-hover: #be123c;
+	--color-primary-light: #fff1f2;
+	
+	--color-secondary: #4f46e5;
+	--color-secondary-hover: #4338ca;
+	
+	--color-accent: #f59e0b;
+	--color-success: #10b981;
+	--color-error: #ef4444;
+	
+	--color-border: #e2e8f0;
+	--color-border-hover: #cbd5e1;
+	
+	/* Shadows */
+	--shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06);
+	--shadow-md: 0 4px 14px rgba(15, 23, 42, 0.08);
+	--shadow-lg: 0 10px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+	--shadow-sticky: 0 4px 20px rgba(15, 23, 42, 0.06);
+	
+	/* Border Radius */
+	--radius-sm: 8px;
+	--radius-md: 12px;
+	--radius-lg: 16px;
+	--radius-full: 9999px;
+	
+	--header-height: 72px;
+}
+
+html {
+	box-sizing: border-box;
+	scroll-behavior: smooth;
+	font-size: 16px;
+	background-color: var(--color-bg-main);
+	color: var(--color-text-main);
+}
+
+*, *:before, *:after {
+	box-sizing: inherit;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	font-family: var(--font-primary);
+	background-color: var(--color-bg-main);
+	color: var(--color-text-main);
+	line-height: 1.6;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	overflow-x: hidden;
+}
+
+section[id] {
+	scroll-margin-top: calc(var(--header-height) + 15px);
+}
+
+/* --------------------------------------------------------------------------
+   2. Sticky Header & Navigation
+   -------------------------------------------------------------------------- */
+.sticky-header {
+	position: sticky;
+	top: 0;
+	z-index: 1000;
+	height: var(--header-height);
+	background: rgba(255, 255, 255, 0.92);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+	box-shadow: var(--shadow-sticky);
+	display: flex;
+	align-items: center;
+	transition: background-color 0.3s ease;
+}
+
+.header-container {
+	width: 90%;
+	max-width: 1200px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.brand-logo {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	text-decoration: none;
+	color: var(--color-text-main);
+	font-weight: 800;
+	font-size: 1.3rem;
+	letter-spacing: -0.5px;
+	transition: transform 0.2s ease;
+}
+
+.brand-logo:hover {
+	transform: scale(1.02);
+}
+
+.logo-icon {
+	font-size: 1.4rem;
+}
+
+.logo-text {
+	background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.main-nav .nav-list {
+	display: flex;
+	list-style: none;
+	gap: 2rem;
+	align-items: center;
+}
+
+.nav-link {
+	text-decoration: none;
+	color: var(--color-text-muted);
+	font-weight: 600;
+	font-size: 0.95rem;
+	padding: 0.5rem 0.75rem;
+	border-radius: var(--radius-sm);
+	transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+	color: var(--color-primary);
+	background-color: var(--color-primary-light);
+}
+
+.nav-admin-link {
+	color: var(--color-primary);
+	background-color: var(--color-primary-light);
+	border: 1px solid rgba(225, 29, 72, 0.2);
+}
+
+.nav-admin-link:hover,
+.nav-admin-link:focus {
+	background-color: #ffe4e6;
+	border-color: var(--color-primary);
+}
+
+/* Mobile Nav Toggle Button */
+.nav-toggle {
+	display: none;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 30px;
+	height: 21px;
+	background: transparent;
+	border: none;
+	cursor: pointer;
+	padding: 0;
+	z-index: 1001;
+}
+
+.hamburger-bar {
+	width: 100%;
+	height: 3px;
+	background-color: var(--color-text-main);
+	border-radius: 3px;
+	transition: all 0.3s ease;
+}
+
+/* --------------------------------------------------------------------------
+   3. Common Container & Section Layouts
+   -------------------------------------------------------------------------- */
+.container {
+	width: 90%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 3rem 0;
+}
+
+.section-header {
+	margin-bottom: 2.5rem;
+}
+
+.section-header h2 {
+	font-size: clamp(1.75rem, 4vw, 2.3rem);
+	font-weight: 800;
+	color: var(--color-text-main);
+	letter-spacing: -0.5px;
+	margin-bottom: 0.5rem;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.subtitle {
+	color: var(--color-text-muted);
+	font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+	max-width: 650px;
+	margin: 0 auto;
+}
+
+/* Buttons */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.85rem 1.6rem;
+	font-size: 1rem;
+	font-weight: 700;
+	border-radius: var(--radius-md);
+	text-decoration: none;
+	cursor: pointer;
+	border: none;
+	transition: all 0.25s ease;
+	min-height: 48px;
+}
+
+.btn-primary {
+	background: linear-gradient(135deg, var(--color-primary), #be123c);
+	color: #ffffff;
+	box-shadow: 0 4px 14px rgba(225, 29, 72, 0.35);
+}
+
+.btn-primary:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(225, 29, 72, 0.45);
+	background: linear-gradient(135deg, #f43f5e, #be123c);
+}
+
+.btn-primary:active {
+	transform: translateY(0);
+}
+
+.btn-outline {
+	background: transparent;
+	color: var(--color-text-main);
+	border: 2px solid var(--color-border);
+}
+
+.btn-outline:hover {
+	border-color: var(--color-primary);
+	color: var(--color-primary);
+	background: var(--color-primary-light);
+}
+
+/* --------------------------------------------------------------------------
+   4. Hero Section
+   -------------------------------------------------------------------------- */
+.hero-section {
+	padding: 4rem 0 3rem;
+	background: radial-gradient(circle at 80% 20%, rgba(225, 29, 72, 0.06), transparent 50%),
+	            radial-gradient(circle at 10% 80%, rgba(79, 70, 229, 0.05), transparent 50%);
+}
+
+.hero-container {
+	width: 90%;
+	max-width: 1200px;
+	margin: 0 auto;
+	display: grid;
+	grid-template-columns: 1.2fr 1fr;
+	gap: 3rem;
+	align-items: center;
+}
+
+.hero-badge {
+	display: inline-block;
+	background: var(--color-primary-light);
+	color: var(--color-primary);
+	font-weight: 700;
+	font-size: 0.85rem;
+	padding: 6px 14px;
+	border-radius: var(--radius-full);
+	margin-bottom: 1.2rem;
+}
+
+.hero-title {
+	font-size: clamp(2.2rem, 5vw, 3.2rem);
+	font-weight: 800;
+	line-height: 1.15;
+	letter-spacing: -1px;
+	color: var(--color-text-main);
+	margin-bottom: 1.2rem;
+}
+
+.hero-subtitle {
+	font-size: clamp(1rem, 2.5vw, 1.15rem);
+	color: var(--color-text-muted);
+	line-height: 1.6;
+	margin-bottom: 2rem;
+}
+
+.hero-actions {
+	display: flex;
+	gap: 1rem;
+	flex-wrap: wrap;
+	margin-bottom: 2.5rem;
+}
+
+.hero-stats {
+	display: flex;
+	gap: 2rem;
+	border-top: 1px solid var(--color-border);
+	padding-top: 1.5rem;
+}
+
+.stat-item {
+	display: flex;
+	flex-direction: column;
+}
+
+.stat-number {
+	font-size: 1.4rem;
+	font-weight: 800;
+	color: var(--color-primary);
+}
+
+.stat-label {
+	font-size: 0.85rem;
+	color: var(--color-text-muted);
+	font-weight: 500;
+}
+
+/* Visual Stack in Hero */
+.hero-visual {
+	position: relative;
+	display: flex;
+	justify-content: center;
+}
+
+.gift-card-stack {
+	position: relative;
+	width: 100%;
+	max-width: 380px;
+}
+
+.visual-card {
+	background: var(--color-bg-card);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-lg);
+	padding: 1.25rem;
+	box-shadow: var(--shadow-lg);
+	transition: all 0.3s ease;
+}
+
+.visual-card-main {
+	position: relative;
+	z-index: 2;
+	border: 2px solid var(--color-primary-light);
+	background: #ffffff;
+}
+
+.vcard-badge {
+	display: inline-block;
+	background: var(--color-primary);
+	color: #ffffff;
+	font-size: 0.75rem;
+	font-weight: 700;
+	padding: 3px 10px;
+	border-radius: var(--radius-full);
+	margin-bottom: 0.5rem;
+}
+
+.vcard-icon {
+	font-size: 2rem;
+	display: block;
+	margin-bottom: 0.5rem;
+}
+
+.vcard-title {
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: var(--color-text-main);
+	display: block;
+}
+
+.vcard-desc {
+	font-size: 0.85rem;
+	color: var(--color-text-muted);
+	margin: 0.4rem 0 0.8rem;
+}
+
+.vcard-price {
+	font-weight: 800;
+	font-size: 1.15rem;
+	color: var(--color-primary);
+}
+
+.visual-card-1 {
+	position: absolute;
+	top: -20px;
+	left: -30px;
+	z-index: 1;
+	transform: rotate(-6deg);
+	opacity: 0.9;
+	width: 200px;
+}
+
+.visual-card-2 {
+	position: absolute;
+	bottom: -25px;
+	right: -30px;
+	z-index: 3;
+	transform: rotate(6deg);
+	width: 220px;
+}
+
+/* --------------------------------------------------------------------------
+   5. Constructor Section & Form (Native Inline Validation Rules)
+   -------------------------------------------------------------------------- */
+.constructor-section {
+	background: var(--color-bg-card);
+	border-top: 1px solid var(--color-border);
+	border-bottom: 1px solid var(--color-border);
+}
+
+.constructor-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 2.5rem;
+	align-items: start;
+}
+
+.form-panel {
+	background: var(--color-bg-main);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-lg);
+	padding: 2rem;
+	box-shadow: var(--shadow-sm);
+}
+
+.gift-form {
+	display: flex;
+	flex-direction: column;
+	gap: 1.25rem;
+}
+
+.form-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 1rem;
+}
+
+.form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 0.45rem;
+}
+
+label {
+	font-weight: 700;
+	font-size: 0.9rem;
+	color: var(--color-text-main);
+}
+
+.required-star {
+	color: var(--color-primary);
+}
+
+.optional-tag {
+	font-size: 0.78rem;
+	color: var(--color-text-light);
+	font-weight: 500;
+}
+
+.field-hint {
+	font-size: 0.78rem;
+	color: var(--color-text-muted);
+}
+
+/* Select & Input styling */
+select,
+input[type="number"] {
+	width: 100%;
+	padding: 0.8rem 1rem;
+	font-family: var(--font-primary);
+	font-size: 16px; /* Prevents auto-zoom on iOS */
+	color: var(--color-text-main);
+	background-color: var(--color-bg-card);
+	border: 1.5px solid var(--color-border);
+	border-radius: var(--radius-md);
+	outline: none;
+	transition: all 0.2s ease;
+	min-height: 48px;
+}
+
+select:focus,
+input[type="number"]:focus {
+	border-color: var(--color-secondary);
+	box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+}
+
+/* NATIVE INLINE FORM VALIDATION STYLES (NO JAVASCRIPT VALIDATION) */
+
+/* Invalid visual state: triggers when field is focused and invalid, OR when user-invalid pseudo-class matches */
+select:focus:invalid,
+input[type="number"]:focus:invalid,
+select:user-invalid,
+input[type="number"]:user-invalid {
+	border-color: var(--color-error) !important;
+	background-color: #fff8f8 !important;
+	box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Valid visual state: when required field has valid value */
+select:required:valid,
+input[type="number"]:required:valid:not(:placeholder-shown) {
+	border-color: var(--color-success);
+	background-color: #f8fff9;
+}
+
+.submit-btn {
+	width: 100%;
+	margin-top: 0.5rem;
+	font-size: 1.05rem;
+}
+
+/* --------------------------------------------------------------------------
+   6. Result Panel & EQUAL-HEIGHT GIFT CARDS
+   -------------------------------------------------------------------------- */
+.result-panel {
+	height: 100%;
+}
+
+.results-wrapper {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+}
+
+.results-wrapper.empty-state {
+	background: var(--color-bg-main);
+	border: 2px dashed var(--color-border-hover);
+	border-radius: var(--radius-lg);
+	padding: 3rem 2rem;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+	min-height: 380px;
+}
+
+.empty-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+	opacity: 0.8;
+}
+
+.empty-state-content h3 {
+	font-size: 1.3rem;
+	font-weight: 700;
+	color: var(--color-text-main);
+	margin-bottom: 0.5rem;
+}
+
+.empty-state-content p {
+	color: var(--color-text-muted);
+	font-size: 0.95rem;
+	max-width: 400px;
+	margin: 0 auto;
+}
+
+/* Results Grid: Enforces equal height columns */
+.results-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	gap: 1.25rem;
+	align-items: stretch; /* CRITICAL: Ensures cards in same row stretch to equal height */
+	width: 100%;
+}
+
+/* Equal Height Result Card */
+.result-card {
+	background: var(--color-bg-card);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	box-shadow: var(--shadow-md);
+	display: flex;
+	flex-direction: column; /* Column flexbox layout */
+	height: 100%; /* Occupy 100% of grid cell height */
+	position: relative;
+	transition: transform 0.25s ease, box-shadow 0.25s ease;
+	min-width: 0; /* Prevents flex children from overflowing horizontal boundaries */
+}
+
+.result-card:hover {
+	transform: translateY(-4px);
+	box-shadow: var(--shadow-lg);
+}
+
+.card-badge {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	background: rgba(15, 23, 42, 0.85);
+	color: #ffffff;
+	font-size: 0.72rem;
+	font-weight: 700;
+	padding: 4px 10px;
+	border-radius: var(--radius-full);
+	backdrop-filter: blur(4px);
+	z-index: 2;
+}
+
+.card-image-wrapper {
+	width: 100%;
+	height: 180px;
+	overflow: hidden;
+	background-color: var(--color-bg-alt);
+}
+
+.card-image-wrapper img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform 0.3s ease;
+}
+
+.result-card:hover .card-image-wrapper img {
+	transform: scale(1.05);
+}
+
+.card-body {
+	padding: 1.2rem;
+	display: flex;
+	flex-direction: column;
+	flex: 1; /* Pushes footer strictly to the bottom of the card */
+	min-width: 0;
+}
+
+.card-tags {
+	display: flex;
+	gap: 0.4rem;
+	flex-wrap: wrap;
+	margin-bottom: 0.6rem;
+}
+
+.card-tag {
+	font-size: 0.75rem;
+	font-weight: 600;
+	padding: 3px 8px;
+	border-radius: var(--radius-sm);
+}
+
+.card-tag-target {
+	background-color: #e0e7ff;
+	color: #3730a3;
+}
+
+.card-tag-cat {
+	background-color: #f1f5f9;
+	color: #475569;
+}
+
+.card-title {
+	font-size: 1.05rem;
+	font-weight: 700;
+	color: var(--color-text-main);
+	line-height: 1.35;
+	margin-bottom: 0.5rem;
+}
+
+.card-desc {
+	font-size: 0.88rem;
+	color: var(--color-text-muted);
+	line-height: 1.5;
+	margin-bottom: 1rem;
+	flex: 1; /* Takes available vertical space so footer stays aligned */
+	overflow-wrap: break-word; /* Prevents long unbroken words from bursting card boundaries */
+	word-break: break-word;
+}
+
+.card-footer {
+	border-top: 1px solid var(--color-border);
+	padding-top: 0.75rem;
+	margin-top: auto; /* Aligns footer elements consistently at card bottom */
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.card-price-label {
+	font-size: 0.78rem;
+	color: var(--color-text-light);
+	font-weight: 600;
+}
+
+.card-price-value {
+	font-size: 1.1rem;
+	font-weight: 800;
+	color: var(--color-primary);
+}
+
+/* No results state box */
+.no-results-box {
+	grid-column: 1 / -1;
+	background: #fff8f8;
+	border: 1px dashed var(--color-error);
+	border-radius: var(--radius-lg);
+	padding: 2.5rem 1.5rem;
+	text-align: center;
+}
+
+.no-results-icon {
+	font-size: 2.5rem;
+	margin-bottom: 0.75rem;
+}
+
+.no-results-box h3 {
+	color: var(--color-error);
+	font-size: 1.2rem;
+	margin-bottom: 0.5rem;
+}
+
+.no-results-box p {
+	color: var(--color-text-muted);
+	font-size: 0.95rem;
+}
+
+.no-results-sub {
+	font-size: 0.85rem !important;
+	margin-top: 0.4rem;
+}
+
+/* --------------------------------------------------------------------------
+   7. Where to Buy Section
+   -------------------------------------------------------------------------- */
+.where-to-buy-section {
+	background: var(--color-bg-main);
+}
+
+.retailers-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+	gap: 1.5rem;
+	margin-bottom: 2rem;
+}
+
+.retailer-card {
+	background: var(--color-bg-card);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-lg);
+	padding: 1.5rem;
+	box-shadow: var(--shadow-sm);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.retailer-card:hover {
+	transform: translateY(-3px);
+	box-shadow: var(--shadow-md);
+}
+
+.retailer-header {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-bottom: 0.75rem;
+}
+
+.retailer-icon {
+	font-size: 1.6rem;
+}
+
+.retailer-header h3 {
+	font-size: 1.1rem;
+	font-weight: 700;
+	color: var(--color-text-main);
+}
+
+.retailer-desc {
+	font-size: 0.88rem;
+	color: var(--color-text-muted);
+	line-height: 1.5;
+	margin-bottom: 1rem;
+}
+
+.retailer-list {
+	list-style: none;
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+	font-size: 0.85rem;
+	color: var(--color-text-main);
+}
+
+.retailer-list li {
+	position: relative;
+	padding-left: 1.2rem;
+}
+
+.retailer-list li::before {
+	content: "•";
+	color: var(--color-primary);
+	font-weight: bold;
+	position: absolute;
+	left: 0;
+}
+
+.where-to-buy-note {
+	background: var(--color-primary-light);
+	border: 1px solid rgba(225, 29, 72, 0.2);
+	border-radius: var(--radius-md);
+	padding: 1rem 1.25rem;
+	display: flex;
+	gap: 0.75rem;
+	align-items: flex-start;
+}
+
+.note-icon {
+	font-size: 1.3rem;
+}
+
+.where-to-buy-note p {
+	font-size: 0.88rem;
+	color: #9f1239;
+	line-height: 1.5;
+}
+
+/* --------------------------------------------------------------------------
+   8. FAQ Section (<details> & <summary>)
+   -------------------------------------------------------------------------- */
+.faq-section {
+	background: var(--color-bg-card);
+	border-top: 1px solid var(--color-border);
+}
+
+.faq-accordion {
+	max-width: 800px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+}
+
+.faq-item {
+	background: var(--color-bg-main);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	overflow: hidden;
+	transition: border-color 0.2s ease;
+}
+
+.faq-item[open] {
+	border-color: var(--color-secondary);
+	box-shadow: var(--shadow-sm);
+}
+
+.faq-question {
+	padding: 1.1rem 1.25rem;
+	font-weight: 700;
+	font-size: 1.02rem;
+	color: var(--color-text-main);
+	cursor: pointer;
+	list-style: none;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	user-select: none;
+}
+
+.faq-question::-webkit-details-marker {
+	display: none;
+}
+
+.faq-arrow {
+	font-size: 0.85rem;
+	color: var(--color-text-muted);
+	transition: transform 0.3s ease;
+}
+
+.faq-item[open] .faq-arrow {
+	transform: rotate(90deg);
+	color: var(--color-secondary);
+}
+
+.faq-answer {
+	padding: 0 1.25rem 1.25rem;
+	color: var(--color-text-muted);
+	font-size: 0.93rem;
+	line-height: 1.6;
+	border-top: 1px solid transparent;
+}
+
+/* --------------------------------------------------------------------------
+   9. Footer
+   -------------------------------------------------------------------------- */
+footer {
+	background-color: var(--color-text-main);
+	color: #ffffff;
+	padding: 3rem 0 2rem;
+	margin-top: auto;
+}
+
+.footer-container {
+	width: 90%;
+	max-width: 1200px;
+	margin: 0 auto;
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}
+
+.footer-brand .footer-logo {
+	font-size: 1.3rem;
+	font-weight: 800;
+	margin-bottom: 0.5rem;
+	display: block;
+}
+
+.footer-brand p {
+	color: var(--color-text-light);
+	font-size: 0.9rem;
+}
+
+.footer-links {
+	display: flex;
+	gap: 1.5rem;
+	flex-wrap: wrap;
+}
+
+.footer-links a {
+	color: #cbd5e1;
+	text-decoration: none;
+	font-size: 0.9rem;
+	font-weight: 500;
+	transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+	color: var(--color-primary-light);
+}
+
+.footer-copy {
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+	padding-top: 1.5rem;
+	color: var(--color-text-light);
+	font-size: 0.85rem;
+}
+
+/* --------------------------------------------------------------------------
+   10. RESPONSIVE BREAKPOINTS (Mobile-First approach)
+   -------------------------------------------------------------------------- */
+@media (max-width: 992px) {
+	.hero-container {
+		grid-template-columns: 1fr;
+		gap: 2.5rem;
+	}
+
+	.hero-visual {
+		order: -1;
+	}
+
+	.constructor-grid {
+		grid-template-columns: 1fr;
+		gap: 2rem;
+	}
+}
+
+@media (max-width: 768px) {
+	.nav-toggle {
+		display: flex;
+	}
+
+	.main-nav {
+		position: absolute;
+		top: var(--header-height);
+		left: 0;
+		width: 100%;
+		background: #ffffff;
+		border-bottom: 1px solid var(--color-border);
+		box-shadow: var(--shadow-md);
+		max-height: 0;
+		overflow: hidden;
+		transition: max-height 0.35s ease-in-out;
+	}
+
+	.main-nav.active {
+		max-height: 300px;
+	}
+
+	.main-nav .nav-list {
+		flex-direction: column;
+		padding: 1.25rem;
+		align-items: stretch;
+		gap: 0.5rem;
+	}
+
+	.nav-link {
+		padding: 0.75rem 1rem;
+	}
+
+	.form-row {
+		grid-template-columns: 1fr;
+	}
+
+	.visual-card-1, .visual-card-2 {
+		display: none;
+	}
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+	*, ::before, ::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}

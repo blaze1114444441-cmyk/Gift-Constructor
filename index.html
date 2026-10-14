@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Конструктор подарунків — Розумний підбір ідей</title>
+	<meta name="description" content="Зберіть ідеальний подарунок для близьких людей за лічені секунди. Підбір ідей за отримувачем, подією та бюджетом.">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎁</text></svg>">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<!-- Sticky Header -->
+	<header class="sticky-header">
+		<div class="header-container">
+			<a href="#hero" class="brand-logo" id="brandLogoLink">
+				<span class="logo-icon">🎁</span>
+				<span class="logo-text">GiftConstructor</span>
+			</a>
+			
+			<button class="nav-toggle" id="navToggleBtn" aria-label="Переключити меню навігації" aria-expanded="false">
+				<span class="hamburger-bar"></span>
+				<span class="hamburger-bar"></span>
+				<span class="hamburger-bar"></span>
+			</button>
+
+			<nav class="main-nav" id="mainNav">
+				<ul class="nav-list">
+					<li><a href="#hero" class="nav-link">Головна</a></li>
+					<li><a href="#constructor" class="nav-link">Конструктор</a></li>
+					<li><a href="#where-to-buy" class="nav-link">Де купити</a></li>
+					<li><a href="#faq" class="nav-link">FAQ</a></li>
+					<li><a href="admin.html" class="nav-link nav-admin-link">⚙️ Адмін-панель</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<main>
+		<!-- 1. Hero Section -->
+		<section id="hero" class="hero-section">
+			<div class="hero-container">
+				<div class="hero-content">
+					<span class="hero-badge">✨ Розумний підбір подарунків</span>
+					<h1 class="hero-title">Ідеальний подарунок для найближчих — за лічені секунди</h1>
+					<p class="hero-subtitle">
+						Більше не потрібно годинами шукати ідеї! Наш конструктор підбере влучні, затишні та незабутні варіанти під будь-якого отримувача, свято та бюджет.
+					</p>
+					<div class="hero-actions">
+						<a href="#constructor" class="btn btn-primary hero-cta">Зібрати подарунок 🎁</a>
+						<a href="#where-to-buy" class="btn btn-outline">Дізнатися де купити 🛒</a>
+					</div>
+					<div class="hero-stats">
+						<div class="stat-item">
+							<span class="stat-number">100+</span>
+							<span class="stat-label">Перевірених ідей</span>
+						</div>
+						<div class="stat-item">
+							<span class="stat-number">100%</span>
+							<span class="stat-label">Реальні ціни</span>
+						</div>
+						<div class="stat-item">
+							<span class="stat-number">0 грн</span>
+							<span class="stat-label">Без комісій</span>
+						</div>
+					</div>
+				</div>
+				<div class="hero-visual">
+					<div class="gift-card-stack">
+						<div class="visual-card visual-card-1">
+							<span class="vcard-icon">🌸</span>
+							<span class="vcard-title">СПА & Догляд</span>
+							<span class="vcard-price">від 450 грн</span>
+						</div>
+						<div class="visual-card visual-card-main">
+							<div class="vcard-badge">Хіт вибору</div>
+							<span class="vcard-icon">🎁</span>
+							<span class="vcard-title">Затишний святковий бокс</span>
+							<p class="vcard-desc">Вовняний плед, крафтовий мед та керамічна чашка</p>
+							<span class="vcard-price">1 200 грн</span>
+						</div>
+						<div class="visual-card visual-card-2">
+							<span class="vcard-icon">🎧</span>
+							<span class="vcard-title">Tech & Gadgets</span>
+							<span class="vcard-price">від 1 800 грн</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2. Constructor Section -->
+		<section id="constructor" class="constructor-section">
+			<div class="container">
+				<div class="section-header text-center">
+					<h2>Конструктор подарунків</h2>
+					<p class="subtitle">Вкажіть параметри нижче та отримайте найкращі ідеї подарунків</p>
+				</div>
+
+				<div class="constructor-grid">
+					<!-- Form Panel -->
+					<div class="form-panel">
+						<form id="giftForm" class="gift-form">
+							<div class="form-row">
+								<div class="form-group">
+									<label for="recipientSelect">Отримувач: <span class="required-star">*</span></label>
+									<select id="recipientSelect" name="recipient" required>
+										<option value="">-- Оберіть отримувача --</option>
+										<option value="Мама">Мама</option>
+										<option value="Тато">Тато</option>
+										<option value="Сестра">Сестра</option>
+										<option value="Брат">Брат</option>
+										<option value="Дружина / Дівчина">Дружина / Дівчина</option>
+										<option value="Чоловік / Хлопець">Чоловік / Хлопець</option>
+										<option value="Друг / Подруга">Друг / Подруга</option>
+										<option value="Дитина">Дитина</option>
+										<option value="Бабуся / Дідусь">Бабуся / Дідусь</option>
+										<option value="Колега">Колега</option>
+										<option value="Вчитель">Вчитель</option>
+									</select>
+									<span class="field-hint">Оберіть кому призначений подарунок</span>
+								</div>
+
+								<div class="form-group">
+									<label for="occasionSelect">Подія: <span class="required-star">*</span></label>
+									<select id="occasionSelect" name="occasion" required>
+										<option value="">-- Оберіть подію --</option>
+										<option value="ДН">День Народження (ДН)</option>
+										<option value="НР">Новий Рік (НР)</option>
+										<option value="14 Лютого">14 Лютого (День Закоханих)</option>
+										<option value="8Б">8 Березня (8Б)</option>
+										<option value="День Матері / Батька">День Матері / Батька</option>
+										<option value="Весілля / Річниця">Весілля / Річниця</option>
+										<option value="Випускний">Випускний</option>
+										<option value="Новосілля">Новосілля</option>
+										<option value="Без приводу">Без приводу (Просто так)</option>
+									</select>
+									<span class="field-hint">Оберіть привід для привітання</span>
+								</div>
+							</div>
+
+							<div class="form-row">
+								<div class="form-group">
+									<label for="budgetInput">Бюджет (грн): <span class="required-star">*</span></label>
+									<input type="number" id="budgetInput" name="budget" placeholder="Вкажіть суму (напр. 1000)" min="100" max="500000" step="50" required>
+									<span class="field-hint">Мін. 100 грн, макс. 500 000 грн</span>
+								</div>
+
+								<div class="form-group">
+									<label for="categorySelect">Категорія подарунка: <span class="optional-tag">(опціонально)</span></label>
+									<select id="categorySelect" name="category">
+										<option value="">Усі категорії</option>
+										<option value="SPA & Догляд">SPA & Догляд</option>
+										<option value="Гаджети & Tech">Гаджети & Tech</option>
+										<option value="Затишок & Дім">Затишок & Дім</option>
+										<option value="Солодощі & Кава">Солодощі & Кава</option>
+										<option value="Стиль & Аксесуари">Стиль & Аксесуари</option>
+										<option value="Книги & Творчість">Книги & Творчість</option>
+										<option value="Враження">Враження</option>
+									</select>
+									<span class="field-hint">Можна уточнити бажаний напрямок</span>
+								</div>
+							</div>
+
+							<button type="submit" id="submitBtn" class="btn btn-primary submit-btn">
+								<span>Зібрати подарунки</span>
+								<span class="btn-icon">🎁</span>
+							</button>
+						</form>
+					</div>
+
+					<!-- Result Panel -->
+					<div class="result-panel">
+						<div id="rezultatContainer" class="results-wrapper empty-state">
+							<div class="empty-state-content" id="emptyStateContent">
+								<div class="empty-icon">🎁</div>
+								<h3>Подарунок не зібрано</h3>
+								<p>Оберіть отримувача, подію та вкажіть бюджет у формі ліворуч, після чого натисніть кнопку «Зібрати подарунки».</p>
+							</div>
+							<div id="resultsGrid" class="results-grid" style="display: none;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3. Where to Buy Section -->
+		<section id="where-to-buy" class="where-to-buy-section">
+			<div class="container">
+				<div class="section-header text-center">
+					<h2>Де придбати рекомендовані подарунки</h2>
+					<p class="subtitle">Перевірені варіанти та рекомендації для швидкої та безпечної покупки</p>
+				</div>
+
+				<div class="retailers-grid">
+					<div class="retailer-card">
+						<div class="retailer-header">
+							<span class="retailer-icon">🛒</span>
+							<h3>Онлайн-маркетплейси</h3>
+						</div>
+						<p class="retailer-desc">Універсальні майданчики для швидкого замовлення гаджетів, техніки, книг та товарів для дому з доставкою по всій Україні.</p>
+						<ul class="retailer-list">
+							<li><strong>Rozetka</strong> — техніка, іграшки, набори</li>
+							<li><strong>Prom.ua</strong> — великий вибір локальних продавців</li>
+							<li><strong>Епіцентр</strong> — товари для дому та декору</li>
+						</ul>
+					</div>
+
+					<div class="retailer-card">
+						<div class="retailer-header">
+							<span class="retailer-icon">💄</span>
+							<h3>Б'юті & Догляд</h3>
+						</div>
+						<p class="retailer-desc">Спеціалізовані мережі для придбання оригінальної косметики, парфумерії, СПА-наборів та засобів догляду.</p>
+						<ul class="retailer-list">
+							<li><strong>MakeUp.ua</strong> — парфумерія та догляд</li>
+							<li><strong>EVA.ua</strong> — б'юті-бокси та доглядові мережі</li>
+							<li><strong>Brocard</strong> — преміальна парфумерія</li>
+						</ul>
+					</div>
+
+					<div class="retailer-card">
+						<div class="retailer-header">
+							<span class="retailer-icon">🎨</span>
+							<h3>Крафтові майстерні</h3>
+						</div>
+						<p class="retailer-desc">Авторські подарунки ручної роботи: шкіряні аксесуари, духмяні свічки, соєвий віск та натуральний мед.</p>
+						<ul class="retailer-list">
+							<li><strong>Crafta.ua</strong> — вироби українських майстрів</li>
+							<li><strong>Instagram-майстерні</strong> — крафтові солодощі</li>
+							<li><strong>Локальні ярмарки</strong> — подарункові сети</li>
+						</ul>
+					</div>
+
+					<div class="retailer-card">
+						<div class="retailer-header">
+							<span class="retailer-icon">📚</span>
+							<h3>Книгарні та Враження</h3>
+						</div>
+						<p class="retailer-desc">Книжкові новинки, подарункові видання, настільні ігри, а також сертифікати на враження та майстер-класи.</p>
+						<ul class="retailer-list">
+							<li><strong>Книгарня «Є» / Yakaboo</strong> — літературні подарунки</li>
+							<li><strong>Bodo.ua</strong> — сертифікати на емоції та СПА</li>
+							<li><strong>Настільні ігри</strong> — Gameland, Игромаг</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="where-to-buy-note">
+					<span class="note-icon">💡</span>
+					<p><strong>Зверніть увагу:</strong> Вказані у конструкторі ціни є орієнтовними та базуються на середніх ринкових пропозиціях. Реальна вартість може дещо відрізнятися залежно від обраного магазину, діючих знижок та комплектації.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4. FAQ Section -->
+		<section id="faq" class="faq-section">
+			<div class="container">
+				<div class="section-header text-center">
+					<h2>Часті запитання (FAQ)</h2>
+					<p class="subtitle">Відповіді на популярні питання щодо користування конструктором</p>
+				</div>
+
+				<div class="faq-accordion">
+					<details class="faq-item" open>
+						<summary class="faq-question">
+							<span class="faq-title">1. Як працює Конструктор подарунків?</span>
+							<span class="faq-arrow">❯</span>
+						</summary>
+						<div class="faq-answer">
+							<p>Конструктор аналізує ваші введені дані (отримувача, привід, бюджет та за бажанням категорію) і зі зіставляє їх із нашою базою ідей. Алгоритм підбирає найбільш влучні варіанти, які гарантовано вписуються в обраний бюджет.</p>
+						</div>
+					</details>
+
+					<details class="faq-item">
+						<summary class="faq-question">
+							<span class="faq-title">2. Як саме підбираються ідеї подарунків?</span>
+							<span class="faq-arrow">❯</span>
+						</summary>
+						<div class="faq-answer">
+							<p>Кожен подарунок у нашій системі має прив'язку до відповідних отримувачів (мама, тато, друга половинка тощо), специфіки свята та реальної фіксованої вартості. Алгоритм фільтрує подарунки за цими критеріями та виводить 1–3 найкращих збіги.</p>
+						</div>
+					</details>
+
+					<details class="faq-item">
+						<summary class="faq-question">
+							<span class="faq-title">3. Як бюджет впливає на рекомендації?</span>
+							<span class="faq-arrow">❯</span>
+						</summary>
+						<div class="faq-answer">
+							<p>Бюджет діє як строго обмеження для вибору: пропонуються лише ті подарунки, реальна вартість яких не перевищує вказану вами суму. Бюджет не змінює штучно ціну товару, а допомагає знайти дійсно доступні варіанти.</p>
+						</div>
+					</details>
+
+					<details class="faq-item">
+						<summary class="faq-question">
+							<span class="faq-title">4. Чи можна обрати різних отримувачів та події?</span>
+							<span class="faq-arrow">❯</span>
+						</summary>
+						<div class="faq-answer">
+							<p>Так! У формі доступний широкий перелік отримувачів (батьки, друзі, колеги, діти, вчителі) та подій (День Народження, Новий Рік, 14 Лютого, 8 Березня, Весілля, Випускний чи просто подарунок без приводу).</p>
+						</div>
+					</details>
+
+					<details class="faq-item">
+						<summary class="faq-question">
+							<span class="faq-title">5. Чи є вказані ціни точними або орієнтовними?</span>
+							<span class="faq-arrow">❯</span>
+						</summary>
+						<div class="faq-answer">
+							<p>Усі ціни вказані в українських гривнях (грн) і є реальними орієнтовними ринковими цінами на момент наповнення бази. В залежності від конкретного продавця ціна може трохи варіюватися.</p>
+						</div>
+					</details>
+
+					<details class="faq-item">
+						<summary class="faq-question">
+							<span class="faq-title">6. Чи можна змінити вибір і згенерувати нові рекомендації?</span>
+							<span class="faq-arrow">❯</span>
+						</summary>
+						<div class="faq-answer">
+							<p>Звичайно! Ви можете змінювати параметри у формі будь-яку кількість разів і знову натискати «Зібрати подарунки». Результати миттєво оновляться.</p>
+						</div>
+					</details>
+
+					<details class="faq-item">
+						<summary class="faq-question">
+							<span class="faq-title">7. Де можна придбати рекомендовані подарунки?</span>
+							<span class="faq-arrow">❯</span>
+						</summary>
+						<div class="faq-answer">
+							<p>Усі пропоновані ідеї є популярними та доступними в українських онлайн-магазинах (Rozetka, Prom, MakeUp, Книгарня «Є»), а також у локальних майстернях та торгівельних центрах. Детальніше дивіться розділ «Де купити».</p>
+						</div>
+					</details>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<!-- Footer -->
+	<footer>
+		<div class="footer-container">
+			<div class="footer-brand">
+				<span class="footer-logo">🎁 GiftConstructor</span>
+				<p>Розумний помічник для вибору подарунків близьким людям.</p>
+			</div>
+			<div class="footer-links">
+				<a href="#hero">Головна</a>
+				<a href="#constructor">Конструктор</a>
+				<a href="#where-to-buy">Де купити</a>
+				<a href="#faq">FAQ</a>
+				<a href="admin.html">Адмін-панель</a>
+			</div>
+			<div class="footer-copy">
+				<p>© 2026 Конструктор подарунків. Усі права захищено.</p>
+			</div>
+		</div>
+	</footer>
+
+	<script src="catalog-service.js"></script>
+	<script src="script.js"></script>
+</body>
+
+</html>
